@@ -1,5 +1,6 @@
 import math
 import random
+from sklearn.utils import shuffle
 
 LEARNINGRATE = 0.3
 alpha = LEARNINGRATE
@@ -69,8 +70,19 @@ class Layer():
 class Network():
     def __init__(self, networkInput):
         self.layers = []
+        self.samples = []
         self.networkInput = networkInput
-        
+    def addSample(self,sample):
+        self.samples.append(sample)
+    
+    def trainSamples(self,batchSize,nbLearn):
+        for _ in range(nbLearn) :
+            newSamples = shuffle(self.samples)
+            batch = newSamples[0:batchSize]
+            for sample in batch:
+                [input,expected]=sample
+                self.backProp(input, expected)
+
     def addLayer(self,layerSize):
         if len(self.layers)< 1:
             layer = Layer(layerSize,self.networkInput)
@@ -155,13 +167,15 @@ if __name__ == "__main__":
 #     print("----")
     
     print ("back prop ")
-    for sampleIndex in range(30000):
+    for sampleIndex in range(1000):
         a=random.random()/2.
         b=random.random()/2.
         inputSample = [a,b]
         outputsample = [a+b]
-        network.backProp(inputSample, outputsample)
-        print("acc",network.accuracy)
+        network.addSample([inputSample,outputsample])
+#         network.backProp(inputSample, outputsample)
+    network.trainSamples(100,100)
+    print("acc",network.accuracy)
 #     network.backProp([50,1,10], [2,2])
     print ("training done, now showing new cases")
     for sampleIndex in range (10):
