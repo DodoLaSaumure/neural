@@ -174,7 +174,7 @@ if __name__ == "__main__":
         outputsample = [a+b]
         network.addSample([inputSample,outputsample])
 #         network.backProp(inputSample, outputsample)
-    network.trainSamples(100,100)
+#    network.trainSamples(100,100)
     print("acc",network.accuracy)
 #     network.backProp([50,1,10], [2,2])
     print ("training done, now showing new cases")
